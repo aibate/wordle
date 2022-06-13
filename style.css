@@ -45,3 +45,6 @@ button{
 .wrongPosition {
     background-color: yellow;
 }
+.wrong {
+    background-color: gray;
+}
