@@ -24,6 +24,7 @@ input {
     margin: 0.1em;
     padding-bottom: 0.1em;
     color: black;
+    transform-style: preserve-3d;
 }
 #wordInputArea{
     padding: 20px;
@@ -32,7 +33,7 @@ input {
 body{
     margin:0 auto;
     background-color: white;
-    width: 600px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,12 +44,18 @@ button{
 }
 .correct {
     background-color: green;
+    transition: 2s ease-in-out;
+    transform: perspective(500px) rotateX(360deg);
 }
 .wrongPosition {
     background-color: yellow;
+    transition: 2s ease-in-out;
+    transform: perspective(500px) rotateX(360deg);
 }
 .wrong {
     background-color: gray;
+    transition: 2s ease-in-out;
+    transform: perspective(500px) rotateX(360deg);
 }
 #message {
     text-align: center;

@@ -105,9 +105,10 @@ function checkInput(event){
             checkedword = gussedWord.slice(0,i+1);
         }
         challangeCounter += 1;
-        finishGame();
+        
         disableInputBoxes()
         ableInputBoxes()
+        finishGame();
         newChallange()
     }else {
         alert('It is not a word, please try again')
