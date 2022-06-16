@@ -6,6 +6,7 @@ let gussedWord;
 console.log(answer);
 let challangeCounter = 1;
 let correctLetterCounter = 0 ;
+let currentFocusElement = document.activeElement;
 const stage = {
     challange1:['','','','',''],
     challange2:['','','','',''],
@@ -49,9 +50,17 @@ function render(){
             rowForchallange.append(inputBox);
             index += 1;
         }
-    }  
+    } 
+    const keys = document.querySelectorAll(".key:not(#enterKey,#deleteKey)");
+    for (const key of keys){
+        key.addEventListener("click", pressedKey)
+    }
+    const enterKey = document.querySelector("#enterKey");
+    const deleteKey = document.querySelector("#deleteKey");
+   
 }
-function addLetter(event){ // this add letter to objext stage
+
+function addLetter(){ // this add letter to objext stage
     stage[event.target.parentElement.id][event.target.dataset.index] = event.target.value.toLowerCase() 
     console.log(stage)
 }
@@ -82,8 +91,6 @@ function pressedEnter(event){
     }
 }
 function checkInput(event){
-    debugger
-    
     const answerArray = answer.split("") 
     gussedWord = stage[event.target.parentElement.id];
     // let checkedword = answer ;
@@ -91,9 +98,10 @@ function checkInput(event){
         for (let i = 0 ; i < 5 ; i++){
             const selectedElementIdName = `#char${i}${event.target.parentElement.id}`
             if(answerArray[i]=== gussedWord[i]){
-                document.querySelector(selectedElementIdName).classList.add("correct");
+                setTimeout(document.querySelector(selectedElementIdName).classList.add("correct"), 2000);
                 answerArray[i] = '';
                 gussedWord[i] = '';
+                correctLetterCounter += 1;
             }
         }
         for (let i = 0 ; i < 5 ; i++){
@@ -101,7 +109,7 @@ function checkInput(event){
             if (gussedWord[i] !== ''){
                 const index = answerArray.indexOf(gussedWord[i]);
                 if (index >= 0){
-                    document.querySelector(selectedElementIdName).classList.add("wrongPosition")
+                    setTimeout(document.querySelector(selectedElementIdName).classList.add("wrongPosition"), 4000)
                     answer[index] = '';
                     gussedWord[i] = '';
                 }
@@ -110,7 +118,7 @@ function checkInput(event){
         for (let i = 0 ; i < 5 ; i++){
             const selectedElementIdName = `#char${i}${event.target.parentElement.id}`
             if(gussedWord[i] !== ''){
-                document.querySelector(selectedElementIdName).classList.add("wrong");
+                setTimeout(document.querySelector(selectedElementIdName).classList.add("wrong"), 8000);
             }
         }
         challangeCounter += 1;
@@ -130,7 +138,7 @@ function newChallange(){ /// this move to next challange and focus on first box
     }
 }
 
-function finishGame(){
+function finishGame(){ // finishing game by winning: correct letter is 5 
     if(correctLetterCounter === 5){ //winning message
         document.querySelector("#message").textContent = "You got it!"
         document.querySelector("#message").appendChild(resetBtn);
@@ -142,14 +150,23 @@ function finishGame(){
         disableInputBoxes() // avoding user to enter more letter
     }
 }
+let indexForkeybord = 0;
+function pressedKey(){
+    debugger
+    const inputKey = event.target.textContent;
+    const selectedElementIdName = document.querySelector(`#char${indexForkeybord}challange${challangeCounter}`)
+    selectedElementIdName.value = inputKey;
 
-function disableInputBoxes(){
+    indexForkeybord += 1;
+    
+}
+function disableInputBoxes(){ // disabling input boxes.
     const inputBoxes = document.querySelectorAll("input");
     for (const inputBox of inputBoxes){
         inputBox.setAttribute('disabled', '');
     }
 }
-function ableInputBoxes(){
+function ableInputBoxes(){ // user can only type in current challange row
     const currentChallangeInputBoxes = document.querySelectorAll(`#challange${challangeCounter} input`);
     for(const currentChallangeInputBox of currentChallangeInputBoxes){
         currentChallangeInputBox.removeAttribute('disabled');
